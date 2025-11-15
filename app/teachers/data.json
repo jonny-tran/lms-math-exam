@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "header": "Mathematics - Class 10A",
+    "type": "Class",
+    "status": "Active",
+    "target": "30",
+    "limit": "28",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 2,
+    "header": "Mathematics - Class 10B",
+    "type": "Class",
+    "status": "Active",
+    "target": "32",
+    "limit": "30",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 3,
+    "header": "Midterm Exam - Algebra",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "60",
+    "limit": "45",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 4,
+    "header": "Final Exam - Geometry",
+    "type": "Exam",
+    "status": "Pending",
+    "target": "90",
+    "limit": "0",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 5,
+    "header": "Homework Assignment - Week 1",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "28",
+    "limit": "22",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 6,
+    "header": "Practice Quiz - Functions",
+    "type": "Activity",
+    "status": "Done",
+    "target": "30",
+    "limit": "30",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 7,
+    "header": "Physics - Class 11A",
+    "type": "Class",
+    "status": "Active",
+    "target": "25",
+    "limit": "24",
+    "reviewer": "Trần Thị B"
+  },
+  {
+    "id": 8,
+    "header": "Quarterly Exam - Mechanics",
+    "type": "Exam",
+    "status": "Done",
+    "target": "75",
+    "limit": "75",
+    "reviewer": "Trần Thị B"
+  },
+  {
+    "id": 9,
+    "header": "Lab Report - Motion",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "24",
+    "limit": "18",
+    "reviewer": "Trần Thị B"
+  },
+  {
+    "id": 10,
+    "header": "Mathematics - Class 11A",
+    "type": "Class",
+    "status": "Active",
+    "target": "28",
+    "limit": "27",
+    "reviewer": "Lê Văn C"
+  },
+  {
+    "id": 11,
+    "header": "Quiz - Trigonometry",
+    "type": "Activity",
+    "status": "Done",
+    "target": "27",
+    "limit": "27",
+    "reviewer": "Lê Văn C"
+  },
+  {
+    "id": 12,
+    "header": "Midterm Exam - Calculus",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "90",
+    "limit": "65",
+    "reviewer": "Lê Văn C"
+  },
+  {
+    "id": 13,
+    "header": "Group Project - Statistics",
+    "type": "Activity",
+    "status": "Pending",
+    "target": "28",
+    "limit": "0",
+    "reviewer": "Lê Văn C"
+  },
+  {
+    "id": 14,
+    "header": "Chemistry - Class 10A",
+    "type": "Class",
+    "status": "Active",
+    "target": "30",
+    "limit": "29",
+    "reviewer": "Phạm Thị D"
+  },
+  {
+    "id": 15,
+    "header": "Practical Test - Organic Chemistry",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "60",
+    "limit": "42",
+    "reviewer": "Phạm Thị D"
+  },
+  {
+    "id": 16,
+    "header": "Lab Exercise - Acids and Bases",
+    "type": "Activity",
+    "status": "Done",
+    "target": "29",
+    "limit": "29",
+    "reviewer": "Phạm Thị D"
+  },
+  {
+    "id": 17,
+    "header": "Mathematics - Class 12A",
+    "type": "Class",
+    "status": "Active",
+    "target": "26",
+    "limit": "25",
+    "reviewer": "Hoàng Văn E"
+  },
+  {
+    "id": 18,
+    "header": "Final Exam - Advanced Math",
+    "type": "Exam",
+    "status": "Pending",
+    "target": "120",
+    "limit": "0",
+    "reviewer": "Hoàng Văn E"
+  },
+  {
+    "id": 19,
+    "header": "Mock Test - University Entrance",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "120",
+    "limit": "88",
+    "reviewer": "Hoàng Văn E"
+  },
+  {
+    "id": 20,
+    "header": "Review Session - Integration",
+    "type": "Activity",
+    "status": "Done",
+    "target": "25",
+    "limit": "25",
+    "reviewer": "Hoàng Văn E"
+  },
+  {
+    "id": 21,
+    "header": "Physics - Class 10B",
+    "type": "Class",
+    "status": "Active",
+    "target": "32",
+    "limit": "31",
+    "reviewer": "Vũ Thị F"
+  },
+  {
+    "id": 22,
+    "header": "Midterm Exam - Thermodynamics",
+    "type": "Exam",
+    "status": "Done",
+    "target": "90",
+    "limit": "90",
+    "reviewer": "Vũ Thị F"
+  },
+  {
+    "id": 23,
+    "header": "Homework - Newton's Laws",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "31",
+    "limit": "26",
+    "reviewer": "Vũ Thị F"
+  },
+  {
+    "id": 24,
+    "header": "Mathematics - Class 9A",
+    "type": "Class",
+    "status": "Active",
+    "target": "35",
+    "limit": "33",
+    "reviewer": "Đỗ Văn G"
+  },
+  {
+    "id": 25,
+    "header": "Quiz - Quadratic Equations",
+    "type": "Activity",
+    "status": "Done",
+    "target": "33",
+    "limit": "33",
+    "reviewer": "Đỗ Văn G"
+  },
+  {
+    "id": 26,
+    "header": "Midterm Exam - Algebra & Geometry",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "90",
+    "limit": "67",
+    "reviewer": "Đỗ Văn G"
+  },
+  {
+    "id": 27,
+    "header": "Chemistry - Class 11B",
+    "type": "Class",
+    "status": "Active",
+    "target": "28",
+    "limit": "27",
+    "reviewer": "Bùi Thị H"
+  },
+  {
+    "id": 28,
+    "header": "Lab Report - Chemical Reactions",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "27",
+    "limit": "20",
+    "reviewer": "Bùi Thị H"
+  },
+  {
+    "id": 29,
+    "header": "Quarterly Exam - Inorganic Chemistry",
+    "type": "Exam",
+    "status": "Pending",
+    "target": "75",
+    "limit": "0",
+    "reviewer": "Bùi Thị H"
+  },
+  {
+    "id": 30,
+    "header": "Mathematics - Class 10C",
+    "type": "Class",
+    "status": "Active",
+    "target": "30",
+    "limit": "28",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 31,
+    "header": "Practice Test - Polynomials",
+    "type": "Activity",
+    "status": "Done",
+    "target": "28",
+    "limit": "28",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 32,
+    "header": "Final Exam - Statistics",
+    "type": "Exam",
+    "status": "Pending",
+    "target": "90",
+    "limit": "0",
+    "reviewer": "Nguyễn Văn A"
+  },
+  {
+    "id": 33,
+    "header": "Physics - Class 12A",
+    "type": "Class",
+    "status": "Active",
+    "target": "24",
+    "limit": "23",
+    "reviewer": "Trần Văn I"
+  },
+  {
+    "id": 34,
+    "header": "Mock Exam - Physics Olympiad",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "180",
+    "limit": "125",
+    "reviewer": "Trần Văn I"
+  },
+  {
+    "id": 35,
+    "header": "Research Project - Quantum Physics",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "23",
+    "limit": "15",
+    "reviewer": "Trần Văn I"
+  },
+  {
+    "id": 36,
+    "header": "Mathematics - Class 11B",
+    "type": "Class",
+    "status": "Active",
+    "target": "29",
+    "limit": "28",
+    "reviewer": "Lê Thị K"
+  },
+  {
+    "id": 37,
+    "header": "Quiz - Complex Numbers",
+    "type": "Activity",
+    "status": "Done",
+    "target": "28",
+    "limit": "28",
+    "reviewer": "Lê Thị K"
+  },
+  {
+    "id": 38,
+    "header": "Midterm Exam - Advanced Algebra",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "90",
+    "limit": "72",
+    "reviewer": "Lê Thị K"
+  },
+  {
+    "id": 39,
+    "header": "Chemistry - Class 12A",
+    "type": "Class",
+    "status": "Active",
+    "target": "22",
+    "limit": "21",
+    "reviewer": "Phạm Văn L"
+  },
+  {
+    "id": 40,
+    "header": "Final Exam - Biochemistry",
+    "type": "Exam",
+    "status": "Pending",
+    "target": "120",
+    "limit": "0",
+    "reviewer": "Phạm Văn L"
+  },
+  {
+    "id": 41,
+    "header": "Lab Exercise - Organic Synthesis",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "21",
+    "limit": "16",
+    "reviewer": "Phạm Văn L"
+  },
+  {
+    "id": 42,
+    "header": "Mathematics - Class 9B",
+    "type": "Class",
+    "status": "Active",
+    "target": "34",
+    "limit": "32",
+    "reviewer": "Hoàng Thị M"
+  },
+  {
+    "id": 43,
+    "header": "Homework - Linear Equations",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "32",
+    "limit": "28",
+    "reviewer": "Hoàng Thị M"
+  },
+  {
+    "id": 44,
+    "header": "Quarterly Exam - Basic Math",
+    "type": "Exam",
+    "status": "Done",
+    "target": "60",
+    "limit": "60",
+    "reviewer": "Hoàng Thị M"
+  },
+  {
+    "id": 45,
+    "header": "Physics - Class 11B",
+    "type": "Class",
+    "status": "Active",
+    "target": "27",
+    "limit": "26",
+    "reviewer": "Vũ Văn N"
+  },
+  {
+    "id": 46,
+    "header": "Lab Report - Electromagnetism",
+    "type": "Activity",
+    "status": "Done",
+    "target": "26",
+    "limit": "26",
+    "reviewer": "Vũ Văn N"
+  },
+  {
+    "id": 47,
+    "header": "Midterm Exam - Waves & Optics",
+    "type": "Exam",
+    "status": "In Process",
+    "target": "90",
+    "limit": "58",
+    "reviewer": "Vũ Văn N"
+  },
+  {
+    "id": 48,
+    "header": "Mathematics - Class 12B",
+    "type": "Class",
+    "status": "Active",
+    "target": "25",
+    "limit": "24",
+    "reviewer": "Đỗ Thị O"
+  },
+  {
+    "id": 49,
+    "header": "Practice Test - Differential Equations",
+    "type": "Activity",
+    "status": "In Process",
+    "target": "24",
+    "limit": "19",
+    "reviewer": "Đỗ Thị O"
+  },
+  {
+    "id": 50,
+    "header": "Final Exam - Advanced Calculus",
+    "type": "Exam",
+    "status": "Pending",
+    "target": "120",
+    "limit": "0",
+    "reviewer": "Đỗ Thị O"
+  }
+]
