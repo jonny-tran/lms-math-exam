@@ -16,7 +16,7 @@ export const routeLabels: Record<string, string> = {
   // Base routes
   teachers: "Teacher",
   teacher: "Teacher",
-  dashboard: "Overview",
+  dashboard: "Dashboard",
   classes: "Classes",
   gradebook: "Gradebook",
   subjects: "Subjects",

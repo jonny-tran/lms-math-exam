@@ -6,8 +6,10 @@ import {
   IconSchool,
   IconLayoutGrid,
   IconTestPipe,
+  IconClipboardList,
   IconBrain,
   IconDatabase,
+  IconMessageChatbot,
   IconSettings,
   IconHelp,
   IconInnerShadowTop,
@@ -51,10 +53,20 @@ const navMain = [
     url: "/teachers/exams",
     icon: IconTestPipe,
   },
+  {
+    title: "Gradebook",
+    url: "/teachers/gradebook",
+    icon: IconClipboardList,
+  },
 ];
 
 // 2. AI & Content Group (Re-using NavDocuments component)
 const navAiContent = [
+  {
+    name: "AI Chat",
+    url: "/teachers/ai/chat",
+    icon: IconMessageChatbot,
+  },
   {
     name: "AI Syllabus",
     url: "/teachers/ai/syllabus",
