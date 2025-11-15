@@ -1,57 +1,52 @@
-import { SiteHeader } from "@/components/teachers/dashboard/site-header";
-import { DataTable } from "@/components/teachers/dashboard/data-table";
+import * as React from "react"
 
-// Mock data - will be replaced with API call
-const mockClassesData = [
-  {
-    id: 1,
-    header: "Mathematics - Class 10A",
-    type: "Class",
-    status: "Active",
-    target: "30",
-    limit: "28",
-    reviewer: "Nguyễn Văn A",
-  },
-  {
-    id: 2,
-    header: "Physics - Class 11A",
-    type: "Class",
-    status: "Active",
-    target: "25",
-    limit: "24",
-    reviewer: "Trần Thị B",
-  },
-  {
-    id: 3,
-    header: "Mathematics - Class 10B",
-    type: "Class",
-    status: "Active",
-    target: "32",
-    limit: "30",
-    reviewer: "Nguyễn Văn A",
-  },
-];
+import { Class, columns } from "./columns"
 
-export default function ClassesPage() {
-  return (
-    <>
-      <SiteHeader />
-      <div className="flex flex-1 flex-col">
-        <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-            <div className="px-4 lg:px-6">
-              <div className="mb-4">
-                <h1 className="text-2xl font-semibold">Classes</h1>
-                <p className="text-muted-foreground">
-                  Manage your classes and students
-                </p>
-              </div>
-              <DataTable data={mockClassesData} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+import { ClassDataTable } from "./class-data-table"
+
+// Mock Data Function
+async function getClassData(): Promise<Class[]> {
+  // In the future, this will be an API call.
+  // Based on physical_diagram.jpg
+  return [
+    {
+      id: "CLS-001",
+      name: "Advanced AI",
+      schedule: "Mon, Wed 10:00-11:30",
+      studentCount: 25,
+      createdAt: "2025-09-01T10:00:00Z",
+      subject: "Artificial Intelligence",
+    },
+    {
+      id: "CLS-002",
+      name: "Intro to Databases",
+      schedule: "Tue, Thu 13:00-14:30",
+      studentCount: 42,
+      createdAt: "2025-09-01T13:00:00Z",
+      subject: "Database Systems",
+    },
+    {
+      id: "CLS-003",
+      name: "Web Development",
+      schedule: "Fri 09:00-12:00",
+      studentCount: 31,
+      createdAt: "2025-09-02T09:00:00Z",
+      subject: "Computer Science",
+    },
+  ]
 }
 
+export default async function ClassesPage() {
+  const data = await getClassData()
+
+  return (
+    <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6">
+      {/* Page Title */}
+      <div className="flex items-center">
+        <h1 className="text-lg font-semibold md:text-2xl">Manage Classes</h1>
+      </div>
+      {/* Data Table */}
+      <ClassDataTable columns={columns} data={data} />
+    </main>
+  )
+}

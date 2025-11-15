@@ -2,16 +2,15 @@
 
 import * as React from "react";
 import {
-  IconChartBar,
   IconDashboard,
+  IconSchool,
+  IconLayoutGrid,
+  IconTestPipe,
+  IconBrain,
   IconDatabase,
-  IconFileAi,
-  IconFolder,
+  IconSettings,
   IconHelp,
   IconInnerShadowTop,
-  IconListDetails,
-  IconSettings,
-  IconUsers,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "@/components/teachers/dashboard/nav-documents";
@@ -26,53 +25,49 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 
-// 1. Data for NavMain (Main tasks)
+// 1. Main Navigation (Core Teacher Workflow)
 const navMain = [
   {
-    title: "Overview",
+    title: "Dashboard",
     url: "/teachers/dashboard",
     icon: IconDashboard,
   },
   {
     title: "Classes",
     url: "/teachers/classes",
-    icon: IconUsers,
+    icon: IconSchool,
   },
   {
-    title: "Gradebook",
-    url: "/teachers/gradebook",
-    icon: IconChartBar,
+    title: "Activities",
+    url: "/teachers/activities",
+    icon: IconLayoutGrid,
+  },
+  {
+    title: "Exams",
+    url: "/teachers/exams",
+    icon: IconTestPipe,
   },
 ];
 
-// 2. Data for NavDocuments (Learning materials management)
-const documents = [
+// 2. AI & Content Group (Re-using NavDocuments component)
+const navAiContent = [
   {
-    name: "Subjects",
-    url: "/teachers/subjects",
-    icon: IconFolder,
+    name: "AI Syllabus",
+    url: "/teachers/ai/syllabus",
+    icon: IconBrain,
   },
   {
     name: "Question Bank",
-    url: "/teachers/questions",
+    url: "/teachers/ai/questions",
     icon: IconDatabase,
-  },
-  {
-    name: "AI Exams",
-    url: "/teachers/exams",
-    icon: IconFileAi,
-  },
-  {
-    name: "Activities",
-    url: "/teachers/activities",
-    icon: IconListDetails,
   },
 ];
 
-// 3. Data for NavSecondary (Settings)
+// 3. Secondary Navigation
 const navSecondary = [
   {
     title: "Settings",
@@ -86,38 +81,48 @@ const navSecondary = [
   },
 ];
 
-// 4. User data (Mock - will be fetched from API)
+// 4. User Data (Mocked)
 const user = {
-  name: "Teacher Name", // Will be fetched from API
-  email: "teacher@example.com", // Will be fetched from API
-  avatar: "https://github.com/shadcn.png", // Will be fetched from API
+  name: "Teacher Name",
+  email: "teacher@example.com",
+  avatar: "https://github.com/shadcn.png",
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  isLoading = false,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { isLoading?: boolean }) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <Link href="/teachers/dashboard">
-                <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">LMS Math Exam</span>
-              </Link>
-            </SidebarMenuButton>
+            {isLoading ? (
+              <SidebarMenuSkeleton showIcon className="h-9" />
+            ) : (
+              <SidebarMenuButton
+                asChild
+                className="data-[slot=sidebar-menu-button]:p-1.5!"
+              >
+                <Link href="/teachers/dashboard">
+                  <IconInnerShadowTop className="size-5!" />
+                  <span className="text-base font-semibold">LMS Math Exam</span>
+                </Link>
+              </SidebarMenuButton>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} />
-        <NavDocuments items={documents} />
-        <NavSecondary items={navSecondary} className="mt-auto" />
+        {/* Pass new navMain data */}
+        <NavMain items={navMain} isLoading={isLoading} />
+        {/* Pass new navAiContent data to NavDocuments component */}
+        <NavDocuments items={navAiContent} isLoading={isLoading} />
+        {/* Pass new navSecondary data */}
+        <NavSecondary items={navSecondary} className="mt-auto" isLoading={isLoading} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user} isLoading={isLoading} />
       </SidebarFooter>
     </Sidebar>
   );
