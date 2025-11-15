@@ -18,5 +18,15 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@shadcnstore": {
+      "url": "https://shadcnstore.com/r/{name}.json"
+    },
+    "@shadcnstore-pro": {
+      "url": "https://shadcnstore.com/r/{name}.json?token=${SHADCNSTORE_TOKEN}",
+      "headers": {
+        "Authorization": "Bearer ${SHADCNSTORE_TOKEN}"
+      }
+    }
+  }
 }
