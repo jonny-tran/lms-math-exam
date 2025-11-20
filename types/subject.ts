@@ -9,10 +9,10 @@ export interface SubjectDto {
   subjectId: number;
   teacherId: number;
   title: string;
-  description: string;
+  description: string | null;
   createdAt: string;
   updatedAt: string | null;
-  teacherName: string;
+  teacherName: string | null;
   classes?: ClassSummaryDto[];
 }
 

@@ -234,7 +234,7 @@ export default function SubjectsPage() {
     return {
       teacherId: editingSubject.teacherId,
       title: editingSubject.title,
-      description: editingSubject.description,
+      description: editingSubject.description ?? "",
     };
   }, [baseFormValues, editingSubject]);
 
