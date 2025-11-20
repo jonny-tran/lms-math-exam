@@ -14,6 +14,7 @@ import {
   IconSettings,
   IconHelp,
   IconInnerShadowTop,
+  IconBooks,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "@/components/teachers/dashboard/nav-documents";
@@ -39,6 +40,11 @@ const navMain = [
     title: "Dashboard",
     url: "/teachers/dashboard",
     icon: IconDashboard,
+  },
+  {
+    title: "Subjects",
+    url: "/teachers/subjects",
+    icon: IconBooks,
   },
   {
     title: "Classes",
@@ -162,7 +168,7 @@ export function AppSidebar({
               >
                 <Link href="/teachers/dashboard">
                   <IconInnerShadowTop className="size-5!" />
-                  <span className="text-base font-semibold">LMS Math Exam</span>
+                  <span className="text-base font-semibold">LMS Math</span>
                 </Link>
               </SidebarMenuButton>
             )}

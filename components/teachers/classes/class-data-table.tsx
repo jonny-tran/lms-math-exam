@@ -54,15 +54,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Spinner } from "@/components/ui/spinner";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onAdd?: () => void;
+  isLoading?: boolean;
+  emptyMessage?: string;
 }
 
-export function SyllabusDataTable<TData, TValue>({
+export function ClassDataTable<TData, TValue>({
   columns,
   data,
+  onAdd,
+  isLoading,
+  emptyMessage = "No data.",
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -100,13 +107,13 @@ export function SyllabusDataTable<TData, TValue>({
 
   return (
     <div className="w-full flex-col justify-start gap-6">
-      <div className="flex items-center justify-between">
+      <div className="mb-5 flex items-center justify-between">
         {/* Filter Input */}
         <Input
-          placeholder="Filter syllabus..."
-          value={(table.getColumn("header")?.getFilterValue() as string) ?? ""}
+          placeholder="Search classes..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("header")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value.trim())
           }
           className="max-w-sm"
         />
@@ -144,9 +151,9 @@ export function SyllabusDataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
           {/* Add New Button */}
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={onAdd} disabled={!onAdd}>
             <IconPlus className="mr-2 h-4 w-4" />
-            Add New Syllabus
+            Add class
           </Button>
         </div>
       </div>
@@ -172,7 +179,16 @@ export function SyllabusDataTable<TData, TValue>({
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24">
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                      <Spinner className="size-5" />
+                      Loading classes...
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
@@ -192,9 +208,9 @@ export function SyllabusDataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 text-center text-sm text-muted-foreground"
                   >
-                    No results.
+                    {emptyMessage}
                   </TableCell>
                 </TableRow>
               )}
@@ -282,4 +298,3 @@ export function SyllabusDataTable<TData, TValue>({
     </div>
   );
 }
-
