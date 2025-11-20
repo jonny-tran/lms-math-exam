@@ -94,10 +94,6 @@ export function LoginForm({
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* Removed Forget-password link as per instructions */}
-                </div>
                 <Input
                   id="password"
                   type="password"

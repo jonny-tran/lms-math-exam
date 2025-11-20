@@ -94,6 +94,16 @@ const refreshAccessToken = async (): Promise<string | null> => {
   return refreshPromise;
 };
 
+const isAuthRoute = (url?: string) => {
+  if (!url) return false;
+  const normalized = url.toLowerCase();
+  return (
+    normalized.includes("/api/auth/login") ||
+    normalized.includes("/api/auth/register") ||
+    normalized.includes("/api/auth/refresh-token")
+  );
+};
+
 const http: AxiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
@@ -118,7 +128,12 @@ http.interceptors.response.use(
     const status = error.response?.status;
     const originalRequest = error.config as RetryableRequestConfig | undefined;
 
-    if (status === 401 && originalRequest && !originalRequest._retry) {
+    if (
+      status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      !isAuthRoute(originalRequest.url)
+    ) {
       if (isRefreshing) {
         const newToken = await refreshAccessToken();
         if (newToken && originalRequest.headers) {

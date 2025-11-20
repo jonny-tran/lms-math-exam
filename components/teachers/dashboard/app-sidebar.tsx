@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   IconDashboard,
   IconSchool,
@@ -29,7 +30,8 @@ import {
   SidebarMenuItem,
   SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
+import { useAuth } from "@/hooks/use-auth";
+import type { MeResponse } from "@/types/auth";
 
 // 1. Main Navigation (Core Teacher Workflow)
 const navMain = [
@@ -93,17 +95,59 @@ const navSecondary = [
   },
 ];
 
-// 4. User Data (Mocked)
-const user = {
-  name: "Teacher Name",
-  email: "teacher@example.com",
-  avatar: "https://github.com/shadcn.png",
+const getFallbackInitials = (email?: string) => {
+  if (!email) {
+    return "T";
+  }
+
+  const [first] = email;
+  return first.toUpperCase();
 };
 
 export function AppSidebar({
   isLoading = false,
   ...props
 }: React.ComponentProps<typeof Sidebar> & { isLoading?: boolean }) {
+  const { getCurrentUser } = useAuth();
+  const [teacher, setTeacher] = React.useState<MeResponse | null>(null);
+  const [pending, setPending] = React.useState<boolean>(false);
+
+  const fetchTeacher = React.useCallback(async () => {
+    setPending(true);
+    try {
+      const data = await getCurrentUser();
+      setTeacher(data);
+    } catch {
+      setTeacher(null);
+    } finally {
+      setPending(false);
+    }
+  }, [getCurrentUser]);
+
+  React.useEffect(() => {
+    fetchTeacher();
+  }, [fetchTeacher]);
+
+  const userDisplay = React.useMemo(() => {
+    if (!teacher) {
+      return {
+        name: "Teacher",
+        email: "teacher@example.com",
+        avatar: "",
+        initials: "T",
+      };
+    }
+
+    return {
+      name: teacher.username ?? teacher.email,
+      email: teacher.email,
+      avatar: "",
+      initials: getFallbackInitials(teacher.email),
+    };
+  }, [teacher]);
+
+  const computedLoading = isLoading || pending;
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -126,15 +170,24 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {/* Pass new navMain data */}
-        <NavMain items={navMain} isLoading={isLoading} />
-        {/* Pass new navAiContent data to NavDocuments component */}
-        <NavDocuments items={navAiContent} isLoading={isLoading} />
-        {/* Pass new navSecondary data */}
-        <NavSecondary items={navSecondary} className="mt-auto" isLoading={isLoading} />
+        <NavMain items={navMain} isLoading={computedLoading} />
+        <NavDocuments items={navAiContent} isLoading={computedLoading} />
+        <NavSecondary
+          items={navSecondary}
+          className="mt-auto"
+          isLoading={computedLoading}
+        />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} isLoading={isLoading} />
+        <NavUser
+          user={{
+            name: userDisplay.name,
+            email: userDisplay.email,
+            avatar: userDisplay.avatar,
+            initials: userDisplay.initials,
+          }}
+          isLoading={computedLoading}
+        />
       </SidebarFooter>
     </Sidebar>
   );
