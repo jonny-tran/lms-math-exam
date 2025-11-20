@@ -1,10 +1,7 @@
 import axios from "axios";
 import { http } from "@/lib/http";
 import { MeResponse } from "@/types/auth";
-import {
-  CreateTeacherProfileRequest,
-  TeacherDto,
-} from "@/types/teacher";
+import { CreateTeacherProfileRequest, TeacherDto } from "@/types/teacher";
 
 const handleTeacherError = (error: unknown): never => {
   if (axios.isAxiosError(error)) {
@@ -36,7 +33,7 @@ const createTeacherProfile = async (
 
 const getMe = async (): Promise<MeResponse> => {
   try {
-    const { data } = await http.get<MeResponse>("/api/Auth/me");
+    const { data } = await http.get<MeResponse>("/authen/me");
     return data;
   } catch (error) {
     throw handleTeacherError(error);
@@ -48,4 +45,3 @@ export const teacherService = {
   createTeacherProfile,
   getMe,
 };
-

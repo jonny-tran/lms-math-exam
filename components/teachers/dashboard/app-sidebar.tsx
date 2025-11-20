@@ -14,6 +14,7 @@ import {
   IconSettings,
   IconHelp,
   IconInnerShadowTop,
+  IconBooks,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "@/components/teachers/dashboard/nav-documents";
@@ -39,6 +40,11 @@ const navMain = [
     title: "Dashboard",
     url: "/teachers/dashboard",
     icon: IconDashboard,
+  },
+  {
+    title: "Subjects",
+    url: "/teachers/subjects",
+    icon: IconBooks,
   },
   {
     title: "Classes",

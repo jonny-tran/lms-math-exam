@@ -9,9 +9,21 @@ export interface SubjectDto {
   subjectId: number;
   teacherId: number;
   title: string;
-  description: string | null;
+  description: string;
   createdAt: string;
   updatedAt: string | null;
-  teacherName: string | null;
-  classes: ClassSummaryDto[];
+  teacherName: string;
+  classes?: ClassSummaryDto[];
+}
+
+export interface CreateSubjectRequest {
+  teacherId: number;
+  title: string;
+  description: string;
+}
+
+export interface UpdateSubjectRequest {
+  teacherId: number;
+  title: string;
+  description: string;
 }

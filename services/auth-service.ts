@@ -23,7 +23,7 @@ const register = async (
 ): Promise<RegisterResponse> => {
   try {
     const { data } = await http.post<RegisterResponse>(
-      "/api/Auth/register",
+      "/authen/register",
       payload
     );
     return data;
@@ -34,7 +34,7 @@ const register = async (
 
 const login = async (payload: LoginRequest): Promise<LoginResponse> => {
   try {
-    const { data } = await http.post<LoginResponse>("/api/Auth/login", payload);
+    const { data } = await http.post<LoginResponse>("/authen/login", payload);
     setAccessTokenCookie(data.accessToken, data.accessTokenExpiry);
     return data;
   } catch (error) {
@@ -44,7 +44,7 @@ const login = async (payload: LoginRequest): Promise<LoginResponse> => {
 
 const getCurrentUser = async (): Promise<MeResponse> => {
   try {
-    const { data } = await http.get<MeResponse>("/api/Auth/me");
+    const { data } = await http.get<MeResponse>("/authen/me");
     return data;
   } catch (error) {
     throw handleAuthError(error);
@@ -54,7 +54,7 @@ const getCurrentUser = async (): Promise<MeResponse> => {
 const refreshToken = async (): Promise<RefreshTokenResponse> => {
   try {
     const { data } = await http.post<RefreshTokenResponse>(
-      "/api/Auth/refresh-token"
+      "/authen/refresh-token"
     );
     setAccessTokenCookie(data.accessToken, data.accessTokenExpiry);
     return data;
