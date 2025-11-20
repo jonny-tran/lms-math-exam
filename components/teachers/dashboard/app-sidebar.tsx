@@ -162,7 +162,7 @@ export function AppSidebar({
               >
                 <Link href="/teachers/dashboard">
                   <IconInnerShadowTop className="size-5!" />
-                  <span className="text-base font-semibold">LMS Math Exam</span>
+                  <span className="text-base font-semibold">LMS Math</span>
                 </Link>
               </SidebarMenuButton>
             )}
