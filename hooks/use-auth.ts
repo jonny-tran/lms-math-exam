@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { useCallback, useState } from 'react';
-import axios from 'axios';
-import { authService } from '@/services/auth-service';
+import { useCallback, useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+import { authService } from "@/services/auth-service";
 import {
   AuthErrorResponse,
   LoginRequest,
@@ -11,7 +12,7 @@ import {
   RefreshTokenResponse,
   RegisterRequest,
   RegisterResponse,
-} from '@/types/auth';
+} from "@/types/auth";
 
 type AuthError = AuthErrorResponse | null;
 
@@ -21,10 +22,28 @@ const parseAuthError = (error: unknown): AuthErrorResponse => {
     if (data) {
       return data;
     }
-    return { error: error.message ?? 'Request failed' };
+    return { error: error.message ?? "Request failed" };
   }
 
-  return { error: 'Unexpected error occurred' };
+  return { error: "Unexpected error occurred" };
+};
+
+const getAuthErrorMessage = (error: AuthErrorResponse): string => {
+  if ("errors" in error) {
+    return Object.entries(error.errors)
+      .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+      .join(" | ");
+  }
+
+  if ("message" in error && typeof error.message === "string") {
+    return error.message;
+  }
+
+  if ("error" in error && typeof error.error === "string") {
+    return error.error;
+  }
+
+  return "An unexpected error occurred. Please try again.";
 };
 
 export const useAuth = () => {
@@ -39,7 +58,9 @@ export const useAuth = () => {
       try {
         return await fn();
       } catch (err) {
-        setError(parseAuthError(err));
+        const parsedError = parseAuthError(err);
+        setError(parsedError);
+        toast.error(getAuthErrorMessage(parsedError));
         throw err;
       } finally {
         setLoading(false);
@@ -49,30 +70,38 @@ export const useAuth = () => {
   );
 
   const register = useCallback(
-    (payload: RegisterRequest): Promise<RegisterResponse> =>
-      runWithState(() => authService.register(payload)),
+    async (payload: RegisterRequest): Promise<RegisterResponse> => {
+      const result = await runWithState(() => authService.register(payload));
+      toast.success(result.message ?? "Registration successful.");
+      return result;
+    },
     [runWithState]
   );
 
   const login = useCallback(
-    (payload: LoginRequest): Promise<LoginResponse> =>
-      runWithState(() => authService.login(payload)),
+    async (payload: LoginRequest): Promise<LoginResponse> => {
+      const result = await runWithState(() => authService.login(payload));
+      toast.success(result.message ?? "Signed in successfully.");
+      return result;
+    },
     [runWithState]
   );
 
-  const getCurrentUser = useCallback(
-    (): Promise<MeResponse> => runWithState(() => authService.getCurrentUser()),
-    [runWithState]
-  );
+  const getCurrentUser = useCallback(async (): Promise<MeResponse> => {
+    const result = await runWithState(() => authService.getCurrentUser());
+    toast.success("Loaded profile successfully.");
+    return result;
+  }, [runWithState]);
 
-  const refreshToken = useCallback(
-    (): Promise<RefreshTokenResponse> =>
-      runWithState(() => authService.refreshToken()),
-    [runWithState]
-  );
+  const refreshToken = useCallback(async (): Promise<RefreshTokenResponse> => {
+    const result = await runWithState(() => authService.refreshToken());
+    toast.success(result.message ?? "Token refreshed successfully.");
+    return result;
+  }, [runWithState]);
 
   const logout = useCallback(() => {
     authService.logout();
+    toast.success("Signed out successfully.");
   }, []);
 
   const clearError = useCallback(() => {
