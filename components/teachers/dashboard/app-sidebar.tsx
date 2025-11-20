@@ -8,13 +8,14 @@ import {
   IconLayoutGrid,
   IconTestPipe,
   IconClipboardList,
-  IconBrain,
-  IconDatabase,
   IconMessageChatbot,
   IconSettings,
   IconHelp,
   IconInnerShadowTop,
   IconBooks,
+  IconSparkles,
+  IconSettingsAutomation,
+  IconHistory,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "@/components/teachers/dashboard/nav-documents";
@@ -76,14 +77,19 @@ const navAiContent = [
     icon: IconMessageChatbot,
   },
   {
-    name: "AI Syllabus",
-    url: "/teachers/ai/syllabus",
-    icon: IconBrain,
+    name: "Quiz Generator",
+    url: "/teachers/ai/quiz",
+    icon: IconSparkles,
   },
   {
-    name: "Question Bank",
-    url: "/teachers/ai/questions",
-    icon: IconDatabase,
+    name: "AI Config",
+    url: "/teachers/ai/config",
+    icon: IconSettingsAutomation,
+  },
+  {
+    name: "AI Logs",
+    url: "/teachers/ai/logs",
+    icon: IconHistory,
   },
 ];
 
