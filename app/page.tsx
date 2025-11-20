@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
-function HomePage() {
-  return <Button>Test UI</Button>;
+export default function HomePage() {
+  redirect("/signin");
+  return null;
 }
-export default HomePage;

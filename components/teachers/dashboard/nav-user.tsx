@@ -1,5 +1,7 @@
 "use client";
 
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -26,6 +28,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/hooks/use-auth";
 
 export function NavUser({
   user,
@@ -39,6 +42,17 @@ export function NavUser({
   isLoading?: boolean;
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+  const { logout, clearError } = useAuth();
+  const [isPending, startTransition] = useTransition();
+
+  const handleLogout = () => {
+    startTransition(() => {
+      clearError();
+      logout();
+      router.push("/signin");
+    });
+  };
 
   if (isLoading) {
     return (
@@ -120,9 +134,15 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={(event) => {
+                event.preventDefault();
+                handleLogout();
+              }}
+              disabled={isPending}
+            >
               <IconLogout />
-              Log out
+              {isPending ? "Logging out..." : "Log out"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
