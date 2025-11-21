@@ -23,7 +23,7 @@ import { useAuth } from "@/hooks/use-auth";
 import type { AuthErrorResponse } from "@/types/auth";
 
 const ROLE_REDIRECTS: Record<string, string> = {
-  student: "/students",
+  student: "/student/dashboard",
   teacher: "/teachers",
   admin: "/admin",
 };
@@ -62,7 +62,8 @@ export function LoginForm({
       const response = await login({ email, password });
       const normalizedRole = response.role?.toString().toLowerCase();
       const redirectPath =
-        (normalizedRole && ROLE_REDIRECTS[normalizedRole]) || "/students";
+        (normalizedRole && ROLE_REDIRECTS[normalizedRole]) ||
+        "/student/dashboard";
       router.push(redirectPath);
     } catch {
       // error state has already been updated by useAuth
@@ -111,9 +112,6 @@ export function LoginForm({
               <Field className="space-y-2">
                 <Button type="submit" disabled={loading} className="w-full">
                   {loading ? "Signing in..." : "Sign in"}
-                </Button>
-                <Button variant="outline" type="button" className="w-full">
-                  Sign in with Google
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}

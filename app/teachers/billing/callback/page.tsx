@@ -31,11 +31,17 @@ function PaymentCallbackContent() {
   const redirectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasRedirectedRef = useRef(false);
 
-  const redirectToBilling = useCallback(() => {
-    if (hasRedirectedRef.current) return;
-    hasRedirectedRef.current = true;
-    router.push("/teachers/billing");
-  }, [router]);
+  const redirectToBilling = useCallback(
+    (paymentResult?: "success" | "failed") => {
+      if (hasRedirectedRef.current) return;
+      hasRedirectedRef.current = true;
+      const url = paymentResult
+        ? `/teachers/billing?paymentResult=${paymentResult}`
+        : "/teachers/billing";
+      router.push(url);
+    },
+    [router]
+  );
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -53,6 +59,9 @@ function PaymentCallbackContent() {
         const errorCode = searchParams.get("errorCode");
         const message = searchParams.get("message");
         const localMessage = searchParams.get("localMessage");
+        const transId = searchParams.get("transId");
+        const orderId = searchParams.get("orderId");
+        const amount = searchParams.get("amount");
 
         // If there is an errorCode and it's not 0 (success), show error immediately
         if (errorCode && errorCode !== "0") {
@@ -62,16 +71,63 @@ function PaymentCallbackContent() {
           setError(errorMsg);
           toast.error(errorMsg, {
             description: `Error code: ${errorCode}`,
+            duration: 3000,
           });
           setIsVerifying(false);
-          // Auto redirect after 3 seconds
+          // Auto redirect after 3 seconds with failed flag
           redirectTimeoutRef.current = setTimeout(() => {
-            redirectToBilling();
+            redirectToBilling("failed");
           }, REDIRECT_DELAY);
           return;
         }
 
-        // Call API to verify payment
+        // If errorCode is 0 (success), show success immediately and verify in background
+        if (errorCode === "0" && transId) {
+          // Show success immediately
+          toast.success(message || localMessage || "Payment successful!", {
+            description: "Your payment has been processed.",
+            duration: 3000,
+          });
+
+          // Create a mock success result for display
+          setVerificationResult({
+            success: true,
+            message: message || localMessage || "Payment successful!",
+            data: {
+              partnerCode: searchParams.get("partnerCode") || "",
+              accessKey: searchParams.get("accessKey") || "",
+              requestId: searchParams.get("requestId") || "",
+              amount: amount || "0",
+              orderId: orderId || "",
+              orderInfo: searchParams.get("orderInfo") || "",
+              orderType: searchParams.get("orderType") || "",
+              transId: transId || "",
+              message: message || "",
+              localMessage: localMessage || "",
+              responseTime: searchParams.get("responseTime") || "",
+              errorCode: 0,
+              payType: searchParams.get("payType") || "",
+              extraData: searchParams.get("extraData") || "",
+            },
+          });
+          setIsVerifying(false);
+
+          // Verify payment in background (optional)
+          try {
+            await paymentService.verifyPaymentCallback(params);
+          } catch (err) {
+            console.error("Background verification failed:", err);
+            // Don't show error, payment was already successful
+          }
+
+          // Auto redirect after 3 seconds with success flag
+          redirectTimeoutRef.current = setTimeout(() => {
+            redirectToBilling("success");
+          }, REDIRECT_DELAY);
+          return;
+        }
+
+        // Call API to verify payment (fallback for cases without errorCode in URL)
         const result = await paymentService.verifyPaymentCallback(params);
         setVerificationResult(result);
 
@@ -79,10 +135,11 @@ function PaymentCallbackContent() {
         if (result.success) {
           toast.success(result.message || "Payment successful!", {
             description: "You will be redirected to the billing page...",
+            duration: 3000,
           });
-          // Auto redirect after 3 seconds
+          // Auto redirect after 3 seconds with success flag
           redirectTimeoutRef.current = setTimeout(() => {
-            redirectToBilling();
+            redirectToBilling("success");
           }, REDIRECT_DELAY);
         } else {
           const errorMsg = result.message || "Payment was not successful";
@@ -91,10 +148,11 @@ function PaymentCallbackContent() {
             description: result.errorCode
               ? `Error code: ${result.errorCode}`
               : undefined,
+            duration: 3000,
           });
-          // Auto redirect after 3 seconds
+          // Auto redirect after 3 seconds with failed flag
           redirectTimeoutRef.current = setTimeout(() => {
-            redirectToBilling();
+            redirectToBilling("failed");
           }, REDIRECT_DELAY);
         }
       } catch (err: unknown) {
@@ -104,10 +162,12 @@ function PaymentCallbackContent() {
           (err as Error).message ||
           "Unable to verify payment. Please try again.";
         setError(errorMessage);
-        toast.error(errorMessage);
-        // Auto redirect after 3 seconds
+        toast.error(errorMessage, {
+          duration: 3000,
+        });
+        // Auto redirect after 3 seconds with failed flag
         redirectTimeoutRef.current = setTimeout(() => {
-          redirectToBilling();
+          redirectToBilling("failed");
         }, REDIRECT_DELAY);
       } finally {
         setIsVerifying(false);
@@ -124,11 +184,11 @@ function PaymentCallbackContent() {
     };
   }, [searchParams, redirectToBilling]);
 
-  const handleBackToBilling = () => {
+  const handleBackToBilling = (paymentResult?: "success" | "failed") => {
     if (redirectTimeoutRef.current) {
       clearTimeout(redirectTimeoutRef.current);
     }
-    redirectToBilling();
+    redirectToBilling(paymentResult);
   };
 
   return (
@@ -154,7 +214,10 @@ function PaymentCallbackContent() {
               </h3>
               <p className="text-muted-foreground">{error}</p>
             </div>
-            <Button onClick={handleBackToBilling} variant="outline">
+            <Button
+              onClick={() => handleBackToBilling("success")}
+              variant="outline"
+            >
               Back to billing page
             </Button>
           </div>
@@ -201,7 +264,9 @@ function PaymentCallbackContent() {
                 </div>
               )}
             </div>
-            <Button onClick={handleBackToBilling}>Back to billing page</Button>
+            <Button onClick={() => handleBackToBilling("success")}>
+              Back to billing page
+            </Button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-4 py-8">
@@ -222,7 +287,10 @@ function PaymentCallbackContent() {
                 </Badge>
               )}
             </div>
-            <Button onClick={handleBackToBilling} variant="outline">
+            <Button
+              onClick={() => handleBackToBilling("failed")}
+              variant="outline"
+            >
               Back to billing page
             </Button>
           </div>

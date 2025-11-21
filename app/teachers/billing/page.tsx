@@ -52,7 +52,21 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-const getStatusBadge = (status: PaymentStatus) => {
+const getStatusBadge = (status: PaymentStatus | string) => {
+  // Handle string status from API
+  if (typeof status === "string") {
+    switch (status.toLowerCase()) {
+      case "completed":
+        return <Badge variant="default">Completed</Badge>;
+      case "pending":
+        return <Badge variant="secondary">Pending</Badge>;
+      case "failed":
+        return <Badge variant="destructive">Failed</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  }
+  // Handle enum status
   switch (status) {
     case PaymentStatus.Completed:
       return <Badge variant="default">Completed</Badge>;
@@ -65,7 +79,10 @@ const getStatusBadge = (status: PaymentStatus) => {
   }
 };
 
-const getMethodLabel = (method: PaymentMethod) => {
+const getMethodLabel = (method: PaymentMethod | string) => {
+  if (typeof method === "string") {
+    return method; // Return string directly if API returns string
+  }
   switch (method) {
     case PaymentMethod.Bank:
       return "Bank";
@@ -111,8 +128,19 @@ export default function BillingPage() {
 
       setIsLoadingPayments(true);
       try {
-        const data = await paymentService.getPaymentsByTeacher(teacherId);
-        setPayments(data);
+        // Get all payments and filter by teacherId on client-side
+        const allPayments = await paymentService.getAllPayments();
+        // Filter payments by teacherId - only show payments for current teacher
+        const teacherPayments = allPayments.filter(
+          (payment) => payment.teacherId === teacherId
+        );
+        // Sort by paymentDate descending (newest first)
+        teacherPayments.sort(
+          (a, b) =>
+            new Date(b.paymentDate).getTime() -
+            new Date(a.paymentDate).getTime()
+        );
+        setPayments(teacherPayments);
       } catch (error) {
         console.error("Failed to fetch payments:", error);
         toast.error("Could not load payment history");
@@ -122,6 +150,56 @@ export default function BillingPage() {
     };
 
     fetchPayments();
+  }, [teacherId]);
+
+  // Handle callback redirect with toast notification
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentResult = urlParams.get("paymentResult");
+
+    if (paymentResult && teacherId) {
+      // Clear the query parameter from URL
+      window.history.replaceState({}, "", "/teachers/billing");
+
+      // Show toast based on payment result
+      if (paymentResult === "success") {
+        toast.success("Payment completed successfully!", {
+          description: "Your payment has been processed.",
+          duration: 5000,
+        });
+      } else if (paymentResult === "failed") {
+        toast.error("Payment failed", {
+          description:
+            "Please try again or contact support if the problem persists.",
+          duration: 5000,
+        });
+      }
+
+      // Refresh payments after a short delay to allow backend to process
+      setTimeout(async () => {
+        if (!teacherId) return;
+
+        setIsLoadingPayments(true);
+        try {
+          const allPayments = await paymentService.getAllPayments();
+          // Filter payments by teacherId - only show payments for current teacher
+          const teacherPayments = allPayments.filter(
+            (payment) => payment.teacherId === teacherId
+          );
+          // Sort by paymentDate descending (newest first)
+          teacherPayments.sort(
+            (a, b) =>
+              new Date(b.paymentDate).getTime() -
+              new Date(a.paymentDate).getTime()
+          );
+          setPayments(teacherPayments);
+        } catch (error) {
+          console.error("Failed to refresh payments:", error);
+        } finally {
+          setIsLoadingPayments(false);
+        }
+      }, 1500);
+    }
   }, [teacherId]);
 
   const handleSubmitPayment = async (e: React.FormEvent) => {
@@ -297,7 +375,6 @@ export default function BillingPage() {
                       <TableHead>Method</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Date</TableHead>
-                      <TableHead>Description</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -337,9 +414,6 @@ export default function BillingPage() {
                           </TableCell>
                           <TableCell>
                             {formatDate(payment.paymentDate)}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {payment.description || "—"}
                           </TableCell>
                         </TableRow>
                       ))

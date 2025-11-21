@@ -31,9 +31,9 @@ export interface PaymentResponseDto {
   teacherName: string;
   amount: number;
   paymentDate: string; // ISO Date String
-  method: PaymentMethod;
-  status: PaymentStatus;
-  description?: string;
+  method: PaymentMethod | string; // Support both enum and string from API
+  status: PaymentStatus | string; // Support both enum and string from API
+  description?: string | null;
 }
 
 export interface PaymentWithMomoResponse extends PaymentResponseDto {
