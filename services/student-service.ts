@@ -22,7 +22,7 @@ const getStudentProfileByUserId = async (
   userId: string
 ): Promise<StudentDto> => {
   try {
-    const { data } = await http.get<StudentDto>(`/student/${userId}`);
+    const { data } = await http.get<StudentDto>("/student/profile");
     return data;
   } catch (error) {
     throw handleStudentError(error);
